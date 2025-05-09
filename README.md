@@ -3,6 +3,7 @@
 This project introduces an AI-driven solution for non-invasive blood group detection using fingerprint images. By leveraging deep learning and machine learning techniques, it aims to eliminate the need for traditional blood sampling. The application utilizes ResNet101 for robust feature extraction from fingerprint images, followed by classification using an optimized XGBoost model. The system is deployed via a web interface built with Flask, allowing users to easily upload fingerprint scans and receive real-time blood group predictions.
 
 PROJECT OVERVIEW:
+
 Motivation:
 
 In emergencies and remote healthcare settings, access to quick and reliable blood group information can be life-saving. Traditional testing requires medical personnel and invasive procedures. This project explores the potential of biometric features (specifically fingerprints) to infer blood group information, providing a fast, contactless, and hardware-free alternative.
