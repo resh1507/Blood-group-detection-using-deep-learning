@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Poppins:wght@400;500&display=swap"
+        rel="stylesheet">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <title>Revolutionizing Blood Group Detection with AI — From Fingerprints to Results in Seconds!</title>
+</head>
+<style>
+    html {
+    scroll-behavior: smooth;
+}
+
+    .custom-navbar {
+        background-color: #a00909;
+        /* Bold Red */
+    }
+
+    .custom-navbar .nav-link {
+        color: white !important;
+        margin-right: 20px;
+        font-weight: 500;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .custom-navbar .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0%;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: white;
+        transition: 0.4s;
+    }
+
+    .custom-navbar .nav-link:hover::after {
+        width: 100%;
+    }
+
+    .custom-navbar .nav-link:hover {
+        color: #ffcccb !important;
+        /* Light hover text color */
+    }
+
+    .navbar-brand {
+        color: white !important;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .navbar-brand,
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .file-upload {
+        border: 2px dashed #c40000;
+        padding: 30px;
+        display: inline-block;
+        border-radius: 10px;
+        width: 300px;
+        background-color: #fff;
+    }
+
+    .file-label {
+        background-color: #c40000;
+        color: white;
+        padding: 10px 20px;
+        display: inline-block;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+
+    #fileInput {
+        display: none;
+    }
+
+    .file-upload:hover {
+        background-color: #ffeaea;
+        transition: 0.3s;
+    }
+    .dropdown:hover .dropdown-menu {
+    display: block;
+}
+    .title {
+        color: #ffffff;
+        font-weight: bold;
+        text-align: center;
+        font-size: 30px;
+        text-decoration: underline;
+        margin-bottom: 20px;
+        /* control spacing below */
+        padding: 20px 10px;
+    }
+    .title2{
+        font-size: 20px;
+        color: #ffffff;
+        font-weight: bold;
+        text-align: center;
+    }
+    .Home-page {
+        background-image: url("https://i.ibb.co/YzbwShP/Firefly-20250324213302.png");
+        background-size:cover;
+        height:100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 50px 20px;
+        text-align: center;
+    }
+    .example-img {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    display: block;
+    margin: 0 auto 15px auto;
+    border: 1px solid #c40000;
+    border-radius: 8px;
+}
+<style>
+    
+    body {
+        font-family: Arial, sans-serif;
+        background-color: white;
+        color: #c40000;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .container {
+        max-width: 900px;
+        background: white;
+        color: #c40000;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(196, 0, 0, 0.2);
+        border: 1px solid #c40000;
+    }
+    .form-group {
+        margin-bottom: 10px;
+    }
+    .form-control {
+        border: 1px solid #c40000;
+    }
+    .btn-check {
+        background-color: #c40000;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        width: 100%;
+        transition: 0.3s;
+    }
+    .btn-check:hover {
+        background-color: #a30000;
+    }
+    .result-box {
+        display: none;
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .eligible {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    .not-eligible {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    .error-message {
+        color: red;
+        font-size: 14px;
+    }
+    .vibrant-heading {
+    font-weight: bold;
+    color: #c40000;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-decoration: underline;
+}
+
+.compatibility-table {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(196, 0, 0, 0.15);
+    border: 1px solid #c40000;
+}
+
+.table-header {
+    background-color: #c40000;
+    color: #ffffff;
+    font-size: 1.2rem;
+}
+
+.compatibility-table td, .compatibility-table th {
+    padding: 15px;
+    font-size: 1.05rem;
+    border: 1px solid #c40000;
+}
+
+.compatibility-table tr:nth-child(even) {
+    background-color: #fff5f5;
+}
+
+.compatibility-table tr:hover {
+    background-color: #ffeaea;
+    cursor: pointer;
+}
+#studies {
+    background-color: #fdf4f5;
+    padding: 50px 0;
+}
+
+#studies h2 {
+    font-weight: 700;
+    color: #a80000;
+    margin-bottom: 30px;
+}
+
+#studies .card {
+    border: 2px solid #b30000;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+    height: 100%;
+}
+
+#studies .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 25px rgba(168, 0, 0, 0.2);
+    background-color: #fff5f5;
+}
+
+#studies .card-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+#studies .card-text {
+    color: #333333;
+    font-size: 0.95rem;
+}
+/* Blood Banks Section Specific Styles */
+#bloodBanksSection {
+  padding: 30px 0;
+  background-color: #f8f8f8;
+}
+
+#bloodBanksSection h2 {
+  color: #671c1c;
+  margin-bottom: 20px;
+}
+
+#bloodBanksSection button {
+  padding: 10px 20px;
+  background: #671c1c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#bloodBanksSection button:hover {
+  background: #4e1414;
+}
+
+#bloodBanksSection #map { 
+    height: 500px; 
+    width: 90%; 
+    margin: 20px auto; 
+    border: 2px solid #c40000;
+    border-radius: 10px;
+}
+
+#bloodBanksSection #locations { 
+    font-size: 16px; 
+    color: #333; 
+    text-align: left; 
+    margin: 20px auto; 
+    width: 80%; 
+}
+
+#bloodBanksSection ul { 
+    list-style-type: none; 
+    padding: 0; 
+}
+
+#bloodBanksSection li { 
+    padding: 12px; 
+    border-bottom: 1px solid #ddd; 
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#bloodBanksSection li:hover { 
+    background-color: #f4f4f4; 
+}
+
+#bloodBanksSection #addressInput { 
+    padding: 10px; 
+    width: 300px; 
+    margin: 10px;
+    border: 1px solid #c40000;
+    border-radius: 5px;
+}
+
+#bloodBanksSection .search-btn {
+    padding: 10px 15px;
+    background-color: #c40000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+#bloodBanksSection .search-btn:hover {
+    background-color: #a30000;
+}
+.navbar-brand img {
+    height: 30px;
+    width: auto;
+    margin-right: 10px;
+}
+
+.navbar-brand {
+    font-family: 'Copperplate', Copperplate Gothic Light, fantasy;
+    font-weight: bold;
+}
+
+/* Added for prediction result display */
+.prediction-result {
+    background-color: #fff;
+    border: 2px solid #c40000;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+}
+
+.prediction-result h3 {
+    color: #c40000;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.prediction-result p {
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: bold;
+}
+</style>
+
+</style>
+
+<body>
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <a class="navbar-brand" href="#" style="font-family: 'Copperplate', Copperplate Gothic Light, fantasy; font-weight: bold;">
+                                
+            <img src="https://i.ibb.co/sdNbyn5c/Whats-App-Image-2025-04-02-at-11-29-48-151e18a6-removebg-preview.png" alt="HemoPrint Logo" style="height: 50px; width: auto; margin-right: 10px;">
+            HemoPrint
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" onclick="showSection('homeSection')">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showSection('aboutSection')">About</a>
+                </li>                             
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="featuresDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Features
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="featuresDropdown">
+                      <a class="dropdown-item" href="#" onclick="showSection('donorEligibilitySection')">Blood Donor Eligibility</a>
+                      <a class="dropdown-item" href="#" onclick="showSection('bloodBanksSection')">Blood Banks - Nearby</a>
+                      <a class="dropdown-item" href="#" onclick="showSection('compatibilityChartSection')">Blood Compatibility Chart</a>
+                    </div>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showSection('studies')">Studies</a>
+                  </li>
+            </ul>
+        </div>
+    </nav>
+<div id="homeSection" style="display:block;">
+    <div class="Home-page d-flex flex-column justify-content-center">
+        <div class="upload-section text-center mt-4">
+            <h2 class = "title2" style="color: #ffffff; font-weight: bold;">Upload Fingerprint & Predict</h2>
+            <form id="predictionForm" enctype="multipart/form-data">
+                <div class="file-upload mt-3">
+                        <img src="https://i.ibb.co/gZW7m6RV/Firefly-A-realistic-white-fingerprint-scan-on-a-deep-red-gradient-background-with-soft-corner-squa.jpg" alt="Example fingerprint" class="example-img">                    
+                    <label for="fileInput" class="file-label" data-toggle="modal" data-target="#uploadHelpModal">Choose your fingerprint image</label>
+                    <input type="file" name="file" id="fileInput" required>
+                </div>
+                <div class="text-center mt-3">
+                    <button type="button" class="btn btn-danger" onclick="predictBloodGroup()">Predict Blood Group</button>
+                </div>
+            </form>
+            <div id="predictionResult" class="prediction-result">
+                <h3>Prediction Result</h3>
+                <p id="resultText"></p>
+            </div>
+        </div>
+    </div>
+    <
+</div>
+    
+<section id="aboutSection" style="display: none; padding: 50px 20px; background-color: #ffffff;">
+        <div class="container">
+            <h2 class="text-center vibrant-heading">HemoPrint</h2>
+            <p style="font-size: 1.2rem; color: #333; line-height: 1.8; text-align: justify; margin-top: 20px;">
+                The <strong>HemoPrint</strong> is an innovative online platform that instantly detects your blood group using just a fingerprint scan—no needles, no lab visits. Powered by advanced AI, it analyzes unique fingerprint patterns to deliver accurate blood type results in seconds. Beyond blood group detection, it also provides instant blood donation eligibility checks and helps you locate nearby blood banks with real-time availability updates.
+            </p>
+            <p style="font-size: 1.2rem; color: #333; line-height: 1.8; text-align: justify;">
+                This tool is invaluable for individuals who want quick access to their blood type for medical records, emergencies, or travel preparedness.<strong>Healthcare professionals</strong> can use it to streamline patient intake and blood donor screenings, saving critical time in urgent situations <strong>Blood banks and donation camps</strong>. benefit from faster, contactless verification, improving efficiency.
+            </p>
+            <p style="font-size: 1.2rem; color: #333; line-height: 1.8; text-align: justify;">
+                Even <strong>employers, schools, and military personnel</strong> can integrate HemoPrint for rapid health data collection. By making blood group identification effortless and universally accessible, HemoPrint bridges the gap between modern AI and everyday healthcare needs.
+            </p>
+        </div>
+    </section>
+    
+<div id="donorEligibilitySection" style="display:none">
+        <div class="container">
+            <h2 class="text-center vibrant-heading">Blood Donation Eligibility</h2>
+            <form id="eligibilityForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Age:</label>
+                            <input type="number" id="age" class="form-control">
+                            <span id="age-error" class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Weight (kg):</label>
+                            <input type="number" id="weight" class="form-control">
+                            <span id="weight-error" class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Gender:</label>
+                            <select id="gender" class="form-control">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Blood Pressure Normal?</label>
+                            <select id="bp" class="form-control">
+                                <option value="choose">Choose</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                            <span id="bp-error" class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Diabetic?</label>
+                            <select id="diabetes" class="form-control">
+                                <option value="choose">Choose</option>
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                            <span id="diabetes-error" class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Any heart/kidney disease?</label>
+                            <select id="disease" class="form-control">
+                                <option value="choose">Choose</option>
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                            <span id="disease-error" class="error-message"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Had alcohol in last 24 hrs?</label>
+                            <select id="alcohol" class="form-control">
+                                <option value="choose">Choose</option>
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                            <span id="alcohol-error" class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Got a tattoo in last 6 months?</label>
+                            <select id="tattoo" class="form-control">
+                                <option value="choose">Choose</option>
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                            <span id="tattoo-error" class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Had surgery in last 6 months?</label>
+                            <select id="surgery" class="form-control">
+                                <option value="choose">Choose</option>
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                            <span id="surgery-error" class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Got vaccinated in last 4 weeks?</label>
+                            <select id="vaccine" class="form-control">
+                                <option value="choose">Choose</option>
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                            <span id="vaccine-error" class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>HIV, Hepatitis B/C, STDs?</label>
+                            <select id="hiv" class="form-control">
+                                <option value="choose">Choose</option>
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                            <span id="hiv-error" class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Pregnant/Breastfeeding?</label>
+                            <select id="pregnant" class="form-control">
+                                <option value="choose">Choose</option>
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                            <span id="pregnant-error" class="error-message"></span>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn-check mt-3" onclick="checkEligibility()">Check Eligibility</button>
+            </form>
+
+            <div id="eligibilityResult" class="result-box"></div>
+        </div>
+ </div>
+ <div id="bloodBanksSection" style="display:none;">
+    <div class="container">
+      <h2 class="text-center">Find Blood Donation Centers Near You</h2>
+      <div class="text-center">
+        <button onclick="getLocation()" class="btn btn-danger">📍 Use My Live Location</button>
+        <br><br>
+        <input type="text" id="addressInput" placeholder="Or enter an address">
+        <button onclick="searchByAddress()" class="btn btn-danger search-btn">🔍 Search</button>
+      </div>
+      <div id="map"></div>
+      <h3 class="text-center mt-3">Nearby Blood Donation Centers:</h3>
+      <ul id="locations"></ul>
+    </div>
+  </div>
+ <section id="compatibilityChartSection" class="container mt-5 section" style="display:none;">
+    <h2 class="text-center vibrant-heading">Blood Group Compatibility Chart</h2>
+    <table class="table table-bordered text-center mt-3 compatibility-table">
+        <thead class="table-header">
+            <tr>
+                <th>Blood Type</th>
+                <th>Can Donate To</th>
+                <th>Can Receive From</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>A+</td><td>A+, AB+</td><td>A+, A-, O+, O-</td></tr>
+            <tr><td>B+</td><td>B+, AB+</td><td>B+, B-, O+, O-</td></tr>
+            <tr><td>O+</td><td>O+, A+, B+, AB+</td><td>O+, O-</td></tr>
+            <tr><td>O-</td><td>All Blood Types (Universal Donor)</td><td>O-</td></tr>
+            <tr><td>AB+</td><td>AB+</td><td>All Blood Types (Universal Recipient)</td></tr>
+        </tbody>
+    </table>
+</section>
+<!-- Studies Section (Rare & Abnormal Blood Cases) -->
+<section class="container mt-5 section" id="studies" class="d-none">
+   
+    <h2 class="text-center">Studies on Rare & Abnormal Blood Cases</h2>
+    <div class="row mt-4">
+        <div class="col-md-4 mb-4">
+            <div class="card p-3">
+                <h5 class="card-title text-danger">Bombay Blood Group</h5>
+                <p class="card-text">An extremely rare blood group found in 1 in a million people, mostly in India.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card p-3">
+                <h5 class="card-title text-danger">Rh Null (Golden Blood)</h5>
+                <p class="card-text">Only about 50 people in the world have this type. It lacks all Rh antigens.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card p-3">
+                <h5 class="card-title text-danger">Lutheran Null Phenotype</h5>
+                <p class="card-text">Absence of all Lutheran antigens; can complicate transfusions and pregnancies.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card p-3">
+                <h5 class="card-title text-danger">Kell Null Phenotype</h5>
+                <p class="card-text">Extremely rare, absence of Kell antigens; critical in pregnancy care and transfusions.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card p-3">
+                <h5 class="card-title text-danger">Vel-negative Blood</h5>
+                <p class="card-text">Found in 1 out of 4,000; Vel antibodies can trigger severe reactions during transfusions.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card p-3">
+                <h5 class="card-title text-danger">Jr(a-) Blood Type</h5>
+                <p class="card-text">Missing Jr(a) antigen; rare outside certain populations; risky for pregnancies.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card p-3">
+                <h5 class="card-title text-danger">Langereis-negative (Lan-)</h5>
+                <p class="card-text">Very rare; antibodies can cause hemolytic reactions in transfusion scenarios.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card p-3">
+                <h5 class="card-title text-danger">Para-Bombay Phenotype</h5>
+                <p class="card-text">A weaker expression of H antigen; can sometimes receive O-type blood cautiously.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card p-3">
+                <h5 class="card-title text-danger">Duffy Null (Fy(a-b-))</h5>
+                <p class="card-text">Common in African descent; provides malaria resistance but is transfusion-challenging.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card p-3">
+                <h5 class="card-title text-danger">En(a-) Blood Type</h5>
+                <p class="card-text">Lack of En(a) antigen in the MNS group; makes finding compatible blood difficult.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // --- Initialize: Hide all sections except Home on page load ---
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hide all sections except Home
+        document.querySelectorAll('section, div[id$="Section"]').forEach(section => {
+            if (section.id !== 'homeSection') section.style.display = 'none';
+        });
+
+        // Initialize image preview for fingerprint upload
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview').innerHTML = `
+                        <img src="${e.target.result}" width="200" 
+                             style="border: 2px solid #c40000; border-radius: 10px; margin-top: 10px;">
+                    `;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+    // --- Unified function to show sections ---
+    function showSection(sectionId) {
+        // Hide all sections
+        document.querySelectorAll('section, div[id$="Section"]').forEach(section => {
+            section.style.display = 'none';
+        });
+        
+        // Show the selected section
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) targetSection.style.display = 'block';
+        
+        // Special case: Resize map if Blood Banks is opened
+        if (sectionId === 'bloodBanksSection') {
+            setTimeout(initMap, 100);
+        }
+        
+        // Scroll to top smoothly
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- Blood Donor Eligibility Check (updated validation) ---
+    function checkEligibility() {
+        // Reset error messages and result box
+        document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+        let resultBox = document.getElementById('eligibilityResult');
+        resultBox.style.display = "none";
+        
+        // Get all values
+        const age = parseInt(document.getElementById('age').value);
+        const weight = parseInt(document.getElementById('weight').value);
+        const gender = document.getElementById('gender').value;
+        const bp = document.getElementById('bp').value;
+        const diabetes = document.getElementById('diabetes').value;
+        const disease = document.getElementById('disease').value;
+        const alcohol = document.getElementById('alcohol').value;
+        const tattoo = document.getElementById('tattoo').value;
+        const surgery = document.getElementById('surgery').value;
+        const vaccine = document.getElementById('vaccine').value;
+        const hiv = document.getElementById('hiv').value;
+        const pregnant = document.getElementById('pregnant').value;
+
+        // Validate required fields
+        let isValid = true;
+        
+        function validateField(id, errorMessage) {
+            const field = document.getElementById(id);
+            const errorSpan = document.getElementById(id + "-error");
+            if (field.value === "choose" || !field.value) {
+                errorSpan.textContent = errorMessage;
+                isValid = false;
+            } else {
+                errorSpan.textContent = "";
+            }
+        }
+
+        // Validate all fields
+        validateField('age', "Please enter your age");
+        validateField('weight', "Please enter your weight");
+        validateField('bp', "Please select blood pressure status");
+        validateField('diabetes', "Please select diabetes status");
+        validateField('disease', "Please select heart/kidney disease status");
+        validateField('alcohol', "Please select alcohol consumption status");
+        validateField('tattoo', "Please select tattoo status");
+        validateField('surgery', "Please select surgery status");
+        validateField('vaccine', "Please select vaccination status");
+        validateField('hiv', "Please select HIV/Hepatitis status");
+        if (gender === 'female') {
+            validateField('pregnant', "Please select pregnancy status");
+        }
+
+        if (!isValid) return;
+
+        // Check eligibility criteria
+        let reasons = [];
+        
+        // Age check
+        if (age < 18 || age > 65) {
+            reasons.push(`Age must be between 18-65 (you are ${age})`);
+        }
+        
+        // Weight check
+        if (weight < 50) {
+            reasons.push(`Weight must be at least 50kg (you are ${weight}kg)`);
+        }
+        
+        // Blood pressure check
+        if (bp === 'no') {
+            reasons.push("Blood pressure must be normal");
+        }
+        
+        // Diabetes check (controlled diabetes is often acceptable)
+        if (diabetes === 'yes') {
+            reasons.push("Diabetics on insulin are usually ineligible");
+        }
+        
+        // Automatic disqualifiers
+        if (disease === 'yes') reasons.push("Heart/kidney disease makes you ineligible");
+        if (alcohol === 'yes') reasons.push("Alcohol consumption within 24 hours makes you ineligible");
+        if (tattoo === 'yes') reasons.push("Recent tattoo (within 6 months) makes you ineligible");
+        if (surgery === 'yes') reasons.push("Recent surgery (within 6 months) makes you ineligible");
+        if (hiv === 'yes') reasons.push("HIV/Hepatitis B/C/STDs make you ineligible");
+        if (pregnant === 'yes') reasons.push("Pregnancy/breastfeeding makes you ineligible");
+        
+        // Vaccine check (depends on vaccine type, but we'll treat all as temporary deferral)
+        if (vaccine === 'yes') {
+            reasons.push("Recent vaccination (wait 4 weeks)");
+        }
+
+        // Display results
+        if (reasons.length === 0) {
+            resultBox.className = "result-box eligible";
+            resultBox.innerHTML = "✅ You are eligible to donate blood!";
+        } else {
+            resultBox.className = "result-box not-eligible";
+            resultBox.innerHTML = `
+                ❌ You are NOT eligible to donate blood because:
+                <ul>${reasons.map(reason => `<li>${reason}</li>`).join('')}</ul>
+            `;
+        }
+        
+        resultBox.style.display = "block";
+    }
+    
+    // ====== BLOOD BANKS LOCATOR CODE ======
+    var map;
+
+    function initMap() {
+        if (!map) {
+            map = L.map('map').setView([20.5937, 78.9629], 5); // Default view (India)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+        }
+    }
+
+    function getLocation() {
+        initMap();
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+    function showPosition(position) {
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+        map.setView([lat, lon], 13);
+        L.marker([lat, lon]).addTo(map).bindPopup("You are here!").openPopup();
+        searchDonationCenters(lat, lon);
+    }
+
+    function showError(error) {
+        alert("Unable to retrieve your location.");
+    }
+
+    function searchDonationCenters(lat, lon) {
+        var query = `
+            [out:json];
+            (
+                node["amenity"="blood_donation"](around:20000, ${lat}, ${lon});
+                node["healthcare"="blood_donation"](around:20000, ${lat}, ${lon});
+            );
+            out center;
+        `;
+
+        var url = "https://overpass-api.de/api/interpreter?data=" + encodeURIComponent(query);
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("locations").innerHTML = "";
+                map.eachLayer(function (layer) {
+                    if (!!layer.toGeoJSON) { map.removeLayer(layer); }
+                });
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+
+                let results = data.elements.filter(place => place.tags.name).slice(0, 15); // Limit to 15 results
+
+                if (results.length === 0) {
+                    alert("No blood donation centers found nearby.");
+                    return;
+                }
+
+                results.forEach((place) => {
+                    let placeLat = place.lat;
+                    let placeLon = place.lon;
+                    let name = place.tags.name || "Blood Donation Center";
+                    let street = place.tags["addr:street"] || "";
+                    let city = place.tags["addr:city"] || "";
+                    let state = place.tags["addr:state"] || "";
+                    let postcode = place.tags["addr:postcode"] || "";
+                    let address = [street, city, state, postcode].filter(Boolean).join(", ");
+                    if (!address) address = "Address Not Available";
+
+                    let marker = L.marker([placeLat, placeLon]).addTo(map)
+                        .bindPopup(`<b>${name}</b><br>${address}`);
+
+                    let listItem = document.createElement("li");
+                    listItem.textContent = `${name} - ${address}`;
+                    listItem.onclick = function () {
+                        map.setView([placeLat, placeLon], 16);
+                        marker.openPopup();
+                    };
+
+                    document.getElementById("locations").appendChild(listItem);
+                });
+            })
+            .catch(error => console.error("Error fetching data:", error));
+    }
+
+    function searchByAddress() {
+        let address = document.getElementById("addressInput").value;
+        if (!address) {
+            alert("Please enter an address.");
+            return;
+        }
+
+        let geocodeUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+        
+        fetch(geocodeUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length === 0) {
+                    alert("Address not found. Please try a different location.");
+                    return;
+                }
+                
+                let lat = parseFloat(data[0].lat);
+                let lon = parseFloat(data[0].lon);
+                map.setView([lat, lon], 13);
+                L.marker([lat, lon]).addTo(map).bindPopup("Searched Location").openPopup();
+                searchDonationCenters(lat, lon);
+            })
+            .catch(error => console.error("Error with address search:", error));
+    }
+    // ====== END OF BLOOD BANKS LOCATOR CODE ======
+
+    // ====== BLOOD GROUP PREDICTION FUNCTION ======
+    function predictBloodGroup() {
+        const fileInput = document.getElementById('fileInput');
+        const resultDiv = document.getElementById('predictionResult');
+        const resultText = document.getElementById('resultText');
+        
+        if (!fileInput.files.length) {
+            alert('Please select a fingerprint image first');
+            return;
+        }
+
+        // Show loading state
+        resultText.innerHTML = 'Processing your fingerprint...';
+        resultDiv.style.display = 'block';
+
+        // In a real application, you would send the file to your server here
+        // For demo purposes, we'll simulate a response after 2 seconds
+        setTimeout(() => {
+            // This is a simulation - replace with actual API call
+            // const formData = new FormData(document.getElementById('predictionForm'));
+            // fetch('/predict', {
+            //     method: 'POST',
+            //     body: formData
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     resultText.innerHTML = `Your predicted blood group is: <strong>${data.bloodGroup}</strong>`;
+            // })
+            // .catch(error => {
+            //     resultText.innerHTML = 'Error processing your request. Please try again.';
+            // });
+            
+            // Demo response - replace with actual API call
+            const demoResults = ['A+', 'B+', 'O+', 'AB+', 'A-', 'B-', 'O-', 'AB-'];
+            const randomResult = demoResults[Math.floor(Math.random() * demoResults.length)];
+            resultText.innerHTML = `Your predicted blood group is: <strong>${randomResult}</strong>`;
+        }, 2000);
+    }
+    // ====== END OF BLOOD GROUP PREDICTION FUNCTION ======
+</script>
+</body>
+</html>
