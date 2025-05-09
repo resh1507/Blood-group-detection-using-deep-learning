@@ -4,12 +4,17 @@ This project introduces an AI-driven solution for non-invasive blood group detec
 
 PROJECT OVERVIEW:
 Motivation:
+
 In emergencies and remote healthcare settings, access to quick and reliable blood group information can be life-saving. Traditional testing requires medical personnel and invasive procedures. This project explores the potential of biometric features (specifically fingerprints) to infer blood group information, providing a fast, contactless, and hardware-free alternative.
 
 Objectives:
+
 1.Build a deep learning pipeline for predicting human blood groups from fingerprint images.
+
 2.Eliminate the need for laboratory-based blood group testing.
+
 3.Design and deploy a user-friendly web application for real-time predictions.
+
 4.Demonstrate integration of preprocessing, augmentation, deep learning, and web development.
 
 PROJECT PIPELINE:
