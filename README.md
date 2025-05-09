@@ -1,4 +1,4 @@
-                                              DEEP LEARNING APPROACH FOR BLOOD GROUP IDENTIFICATION USING FINGERPRINTS
+                                          DEEP LEARNING APPROACH FOR BLOOD GROUP IDENTIFICATION USING FINGERPRINTS
 
 This project introduces an AI-driven solution for non-invasive blood group detection using fingerprint images. By leveraging deep learning and machine learning techniques, it aims to eliminate the need for traditional blood sampling. The application utilizes ResNet101 for robust feature extraction from fingerprint images, followed by classification using an optimized XGBoost model. The system is deployed via a web interface built with Flask, allowing users to easily upload fingerprint scans and receive real-time blood group predictions.
 
@@ -17,7 +17,7 @@ PROJECT PIPELINE:
 1.Preprocessing 
    - Enhances fingerprint image quality by removing noise and standardizing contrast and size.
 
-2.Augmentation* 
+2.Augmentation
    - Simulates dataset diversity using techniques like rotation, flipping, scaling, and brightness adjustments.
 
 3.Segmentation  
@@ -39,5 +39,5 @@ Deep Learning: TensorFlow, Keras (ResNet101)
 Machine Learning: XGBoost  
 Image Processing: OpenCV, NumPy  
 Web Development: Flask, HTML, CSS  
-Model Deployment: Flask Routing, Jinja Templates
+Model Deployment: Flask Routing.
 
